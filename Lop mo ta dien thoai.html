@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Dien thoai 1:
+<button type="button" id="turnon" onclick="">ON</button>
+<button type="button" id="turnoff" onclick="">OFF</button>
+<br/>
+<p>Gui tin nhan:</p>
+<p>Noi dung: <input type="text" id="newMessage"/><button type="button" id= "sent" onclick="sentMess1()">SENT</button></p>
+<p><button type="button" id="showInbox" onclick="showHopThuDen1()">Hien thi hop thu den</button></p>
+<p><textarea id="noidungInbox" rows="5" ></textarea></p>
+<p><button type="button" id="showOutbox" onclick="showHopThuDi1()">Hien thi hop thu di</button></p>
+<p><textarea id="noidungOutbox" rows="5"></textarea></p>
+
+<p>===================================================================</p>
+Dien thoai 2:
+<button type="button" id="turnon2" onclick="">ON</button>
+<button type="button" id="turnoff2" onclick="">OFF</button>
+<br/>
+<p>Gui tin nhan:</p>
+<p>Noi dung: <input type="text" id="newMessage2"/><button type="button" id= "sent2" onclick="sentMess2()">SENT</button></p>
+<p><button type="button" id="showInbox2" onclick="showHopThuDen2()">Hien thi hop thu den</button></p>
+<p><textarea id="noidungInbox2" rows="5" ></textarea></p>
+<p><button type="button" id="showOutbox2" onclick="showHopThuDi2()">Hien thi hop thu di</button></p>
+<p><textarea id="noidungOutbox2" rows="5"></textarea></p>
+
+
+</body>
+<script>
+    let Mobiphone = function (battery) {
+        this.battery = battery;
+        this.newMessage = "";
+        this.inbox = [];
+        this.outbox = [];
+
+        this.getBattery = function () {
+            return this.battery;
+        };
+        this.getNewMessage = function () {
+            return this.newMessage;
+        };
+        this.getInbox = function () {
+            return this.inbox;
+        };
+        this.getOutbox = function () {
+            return this.outbox;
+        };
+        this.setBattery = function (battery) {
+            this.battery = battery;
+        };
+        this.setNewMessage = function (newMessage) {
+            this.newMessage = newMessage;
+        };
+        this.setInbox = function (inbox) {
+            this.inbox = inbox
+        };
+        this.setOutbox = function (outbox) {
+            this.outbox = outbox;
+        };
+        this.sendMessage = function (nguoinhan,newMessage) {
+            this.newMessage = newMessage;
+            this.outbox.push(newMessage);
+            nguoinhan.addinbox(newMessage)
+        };
+        this.addinbox = function (newMessage) {
+            this.inbox.push(newMessage)
+        };
+        this.showInbox = function () {
+            let output ="";
+            for (let i = 0; i<this.inbox.length;i++){
+                output += this.inbox[i] + "\n";
+            }
+            if(output ==""){
+                return "Hop thu rong";
+            }
+            return output;
+        };
+
+        this.showOutbox = function () {
+            let output ="";
+            for (let i = 0; i<this.outbox.length;i++){
+                output += this.outbox[i] + "\n";
+            }
+            if(output ==""){
+                return "Hop thu rong";
+            }
+            return output;
+        };
+    };
+    let dienThoai1 = new Mobiphone(100);
+    let dienThoai2 = new Mobiphone(100);
+    //dienThoai1.sendMessage(dienThoai2," Hello would");
+    //console.log(dienThoai1.showOutbox());
+    //console.log("----------------------");
+    //console.log(dienThoai2.showInbox());
+    // gui tin nhan tu dt 1
+    function sentMess1 () {
+        let mess = document.getElementById("newMessage").value;
+        dienThoai1.sendMessage(dienThoai2,mess);
+        alert("Gui thanh cong!");
+    }
+    function sentMess2 () {
+        let mess = document.getElementById("newMessage2").value;
+        dienThoai2.sendMessage(dienThoai1,mess);
+        alert("Gui thanh cong!");
+    }
+    function showHopThuDen1() {
+        let noiHopThu = dienThoai1.showInbox();
+        document.getElementById("noidungInbox").value = noiHopThu;
+    }
+    function showHopThuDen2() {
+        let noiHopThu = dienThoai2.showInbox();
+        document.getElementById("noidungInbox2").value = noiHopThu;
+    }
+    function showHopThuDi1() {
+        let noiHopThu = dienThoai1.showOutbox();
+        document.getElementById("noidungOutbox").value = noiHopThu;
+    }
+    function showHopThuDi2() {
+        let noiHopThu = dienThoai2.showOutbox();
+        document.getElementById("noidungOutbox2").value = noiHopThu;
+    }
+</script>
+</html>
