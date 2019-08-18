@@ -5,33 +5,51 @@
     <title>Title</title>
 </head>
 <body>
-Dien thoai 1:
-<button type="button" id="turnon" onclick="turnOn()">ON</button>
-<button type="button" id="turnoff" onclick="turnOff()">OFF</button>
-<button type="button" id="sacpin" onclick="charge()">CHARGE</button>
+Điện thoại 1:
 <br/>
-<p>Gui tin nhan:</p>
-<p>Noi dung: <input type="text" id="newMessage"/><button type="button" id= "sent" onclick="sentMess1()">SENT</button></p>
-<p><button type="button" id="showInbox" onclick="showHopThuDen1()">Hien thi hop thu den</button></p>
-<p><textarea id="noidungInbox" rows="5" ></textarea></p>
-<p><button type="button" id="showOutbox" onclick="showHopThuDi1()">Hien thi hop thu di</button></p>
-<p><textarea id="noidungOutbox" rows="5"></textarea></p>
-
-<p>===================================================================</p>
+<input type="button" id="btn1" value="OFF"/>
+<input type="button" id="btn2" value="ON"/>
+<div id="content" >
+    <button type="button" id="sacpin" onclick="charge()">CHARGE</button>
+    <br/>
+    <p>Gui tin nhan:</p>
+    <p>Noi dung: <input type="text" id="newMessage"/><button type="button" id= "sent" onclick="sentMess1()">SENT</button></p>
+    <p><button type="button" id="showInbox" onclick="showHopThuDen1()">Hien thi hop thu den</button></p>
+    <p><textarea id="noidungInbox" rows="5" ></textarea></p>
+    <p><button type="button" id="showOutbox" onclick="showHopThuDi1()">Hien thi hop thu di</button></p>
+    <p><textarea id="noidungOutbox" rows="5"></textarea></p>
+</div>
+<br/>
 Dien thoai 2:
-<button type="button" id="turnon2" onclick="">ON</button>
-<button type="button" id="turnoff2" onclick="">OFF</button>
 <br/>
-<p>Gui tin nhan:</p>
-<p>Noi dung: <input type="text" id="newMessage2"/><button type="button" id= "sent2" onclick="sentMess2()">SENT</button></p>
-<p><button type="button" id="showInbox2" onclick="showHopThuDen2()">Hien thi hop thu den</button></p>
-<p><textarea id="noidungInbox2" rows="5" ></textarea></p>
-<p><button type="button" id="showOutbox2" onclick="showHopThuDi2()">Hien thi hop thu di</button></p>
-<p><textarea id="noidungOutbox2" rows="5"></textarea></p>
-
-
-</body>
+<input type="button" id="btn3" value="OFF"/>
+<input type="button" id="btn4" value="ON"/>
+<div id = "content2">
+    <button type="button" id="sacpin2" onclick="charge2()">CHARGE</button>
+    <br/>
+    <p>Gui tin nhan:</p>
+    <p>Noi dung: <input type="text" id="newMessage2"/><button type="button" id= "sent2" onclick="sentMess2()">SENT</button></p>
+    <p><button type="button" id="showInbox2" onclick="showHopThuDen2()">Hien thi hop thu den</button></p>
+    <p><textarea id="noidungInbox2" rows="5" ></textarea></p>
+    <p><button type="button" id="showOutbox2" onclick="showHopThuDi2()">Hien thi hop thu di</button></p>
+    <p><textarea id="noidungOutbox2" rows="5"></textarea></p>
+</div>
 <script>
+
+    document.getElementById("btn1").onclick = function () {
+        document.getElementById("content").style.display = 'none';
+    };
+
+    document.getElementById("btn2").onclick = function () {
+        document.getElementById("content").style.display = 'block';
+    };
+    document.getElementById("btn3").onclick = function () {
+        document.getElementById("content2").style.display = 'none';
+    };
+
+    document.getElementById("btn4").onclick = function () {
+        document.getElementById("content2").style.display = 'block';
+    };
     let Mobiphone = function (battery) {
         this.battery = battery;
         this.newMessage = "";
@@ -52,24 +70,24 @@ Dien thoai 2:
             this.trangthai = t;
         };
         this.sendMessage = function (nguoinhan,newMessage) {
-            if (this.getTrangthai()==true){
+            if (this.getBattery()<20){ alert("Pin yếu")}
                 this.newMessage = newMessage;
                 this.outbox.push(newMessage);
                 nguoinhan.addinbox(newMessage);
                 this.setBattery(this.getBattery()-1);
-            }
+
         };
         this.addinbox = function (newMessage) {
             this.inbox.push(newMessage);
             this.setBattery(this.getBattery()-1);
         };
         this.showInbox = function () {
-            if (this.getTrangthai()==true){
+            if (this.getBattery()<20){ alert("Pin yếu")}
                 this.setBattery(this.getBattery()-1);
                 let output ="";
                 for (let i = 0; i<this.inbox.length;i++){
                     output += this.inbox[i] + "\n";
-                }
+
                 if(output ==""){
                     return "Hop thu rong";
                 }
@@ -78,7 +96,7 @@ Dien thoai 2:
         };
 
         this.showOutbox = function () {
-            if (this.getTrangthai()==true){
+            if (this.getBattery()<20){ alert("Pin yếu")}
                 this.setBattery(this.getBattery()-1);
                 let output ="";
                 for (let i = 0; i<this.outbox.length;i++){
@@ -89,22 +107,13 @@ Dien thoai 2:
                 }
                 return output;
             }
-        }
     };
     let dienThoai1 = new Mobiphone(100);
     let dienThoai2 = new Mobiphone(100);
-    function turnOn() {
-        dienThoai1.setTrangthai(true);
-    }
-    function turnOff() {
-        dienThoai1.setTrangthai(false);
-    }
     function sentMess1 () {
         let mess = document.getElementById("newMessage").value;
         dienThoai1.sendMessage(dienThoai2,mess);
-        if (dienThoai1.getTrangthai()==true){
             alert("Gui thanh cong!");
-        }
         console.log(dienThoai1.getBattery());
     }
     function sentMess2 () {
@@ -140,5 +149,13 @@ Dien thoai 2:
         }
         console.log(dienThoai1.getBattery());
     }
+    function charge2(){
+        while (dienThoai2.getBattery()<100){
+            dienThoai2.setBattery(dienThoai2.getBattery()+1);
+        }
+        console.log(dienThoai2.getBattery());
+    }
+
 </script>
+</body>
 </html>
